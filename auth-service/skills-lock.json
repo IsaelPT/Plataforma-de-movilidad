@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "nestjs-best-practices": {
+      "source": "kadajett/agent-nestjs-skills",
+      "sourceType": "autoskills-registry",
+      "computedHash": "7f14f088a79090183152c2aa556f708b2f5b7d0dacfb0ad339df2d498ba52aa3"
+    },
+    "typescript-advanced-types": {
+      "source": "wshobson/agents",
+      "sourceType": "autoskills-registry",
+      "computedHash": "5ca0e177c6aaaba1889255691224daafdb7d71f317cc70bede1590d3907ded42"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: auth-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: auth-service
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - auth-network
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth-service
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/auth-service
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - RECOVERY_TOKEN_EXPIRATION=${RECOVERY_TOKEN_EXPIRATION}
+      - PORT=${PORT}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - auth-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  mongodb_data:
+
+networks:
+  auth-network:
+    driver: bridge
