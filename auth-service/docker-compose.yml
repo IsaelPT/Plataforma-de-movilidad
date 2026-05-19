@@ -24,7 +24,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - MONGODB_URI=mongodb://mongodb:27017/auth-service
+      - MONGODB_URI=${MONGODB_URI}
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRATION=${JWT_EXPIRATION}
       - RECOVERY_TOKEN_EXPIRATION=${RECOVERY_TOKEN_EXPIRATION}
