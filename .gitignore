@@ -1,0 +1,18 @@
+# Docker
+docker-compose.yml
+Dockerfile
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
