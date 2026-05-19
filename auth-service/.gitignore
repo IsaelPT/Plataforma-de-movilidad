@@ -12,3 +12,7 @@ Thumbs.db
 # Environment
 .env
 .env.local
+
+# Opencode
+.agents/
+.opencode/
