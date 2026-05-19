@@ -1,3 +1,14 @@
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
 .env
-.agents/
-.opencode/
+.env.local
