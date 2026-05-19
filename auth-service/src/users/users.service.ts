@@ -120,11 +120,15 @@ export class UsersService {
   }
 
   async verifyUser(userId: string): Promise<UserDocument> {
-    return this.userModel.findByIdAndUpdate(
+    const user = await this.userModel.findByIdAndUpdate(
       userId,
       { isVerified: true, status: UserStatus.VERIFIED },
       { new: true },
     ).exec();
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
   }
 
   async changePassword(userId: string, newPassword: string): Promise<void> {

@@ -6,7 +6,7 @@ import { DriverDocument, DriverDocumentDocument } from '../users/schemas/driver-
 import { ReviewDocumentDto } from './dto/review-document.dto';
 import { DocumentStatus, UserStatus, UserRole } from '../common/enums';
 
-interface DriverWithDocuments {
+export interface DriverWithDocuments {
   user: UserDocument;
   documents: DriverDocumentDocument[];
 }

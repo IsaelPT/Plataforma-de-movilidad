@@ -12,7 +12,7 @@ import { RecoveryPasswordDto } from './dto/recovery-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dto/create-user.dto';
-import { BCRYPT_ROUNDS, JWT_TOKEN_HASH_ROUNDS, SESSION_EXPIRATION_MINUTES } from '../../common/constants/app.constants';
+import { BCRYPT_ROUNDS, JWT_TOKEN_HASH_ROUNDS, SESSION_EXPIRATION_MINUTES } from '../common/constants/app.constants';
 
 interface RecoveryToken {
   userId: string;
