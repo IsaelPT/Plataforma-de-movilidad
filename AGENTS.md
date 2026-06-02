@@ -5,6 +5,7 @@
 ```
 ├── auth-service/     NestJS + MongoDB/Mongoose (JWT auth, users, admin)
 ├── ride-service/     NestJS + PostgreSQL/PostGIS (rides, geo, routing, SOS)
+├── frontend/         React + Vite + Tailwind (passenger/driver UI)
 └── README.md
 ```
 
