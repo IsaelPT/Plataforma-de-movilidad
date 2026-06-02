@@ -1,0 +1,87 @@
+services:
+  postgis:
+    image: postgis/postgis:16-3.4
+    container_name: ride-postgis
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ride_service
+      POSTGRES_USER: ride_user
+      POSTGRES_PASSWORD: ride_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+      - ./src/database/migrations/001_initial_schema.sql:/docker-entrypoint-initdb.d/001_initial_schema.sql
+    networks:
+      - ride-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ride_user -d ride_service"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  openrouteservice:
+    image: openrouteservice/openrouteservice:v7.1.0
+    container_name: ride-ors
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    volumes:
+      - ors_data:/home/ors/data
+      - ./ors-config:/home/ors/conf
+    environment:
+      - ORS_CONFIG=/home/ors/conf/ors-config.json
+    networks:
+      - ride-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/ors/v2/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  ride-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ride-service
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+      - "3002:3002"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=postgis
+      - DB_PORT=5432
+      - DB_USERNAME=ride_user
+      - DB_PASSWORD=ride_pass
+      - DB_DATABASE=ride_service
+      - ORS_API_URL=http://openrouteservice:8082/ors
+      - PORT=3001
+      - WS_PORT=3002
+      - DRIVER_SEARCH_RADIUS_METERS=${DRIVER_SEARCH_RADIUS_METERS:-5000}
+      - DRIVER_OFFER_TIMEOUT_SECONDS=${DRIVER_OFFER_TIMEOUT_SECONDS:-20}
+      - SCHEDULED_SEARCH_BEFORE_MINUTES=${SCHEDULED_SEARCH_BEFORE_MINUTES:-10}
+    depends_on:
+      postgis:
+        condition: service_healthy
+      openrouteservice:
+        condition: service_started
+    networks:
+      - ride-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  postgis_data:
+  ors_data:
+
+networks:
+  ride-network:
+    name: ride-network
+    driver: bridge

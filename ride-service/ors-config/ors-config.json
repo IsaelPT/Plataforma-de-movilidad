@@ -1,0 +1,26 @@
+{
+  "services": {
+    "directions": {
+      "enabled": true,
+      "mode": "driving-car",
+      "maximum_snapping_radius": 50
+    },
+    "matrix": {
+      "enabled": false
+    },
+    "isochrones": {
+      "enabled": false
+    },
+    "geocoding": {
+      "enabled": false
+    }
+  },
+  "routing": {
+    "profiles": {
+      "driving-car": {
+        "enabled": true,
+        "profile": "driving-car"
+      }
+    }
+  }
+}
