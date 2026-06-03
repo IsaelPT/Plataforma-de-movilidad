@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject, forwardRef } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { DriverLocationRepository } from './driver-location.repository';
@@ -12,7 +12,7 @@ export class GeoService {
   constructor(
     private driverLocationRepository: DriverLocationRepository,
     private configService: ConfigService,
-    private notificationsService: NotificationsService,
+    @Inject(forwardRef(() => NotificationsService)) private notificationsService: NotificationsService,
   ) {
     this.searchRadiusMeters = this.configService.get<number>('ride.searchRadiusMeters') || 5000;
   }

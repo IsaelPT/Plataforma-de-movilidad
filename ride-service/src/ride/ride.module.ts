@@ -16,7 +16,7 @@ import { CancellationModule } from '../cancellation/cancellation.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Ride, DriverOffer]),
-    GeoModule,
+    forwardRef(() => GeoModule),
     RoutingModule,
     forwardRef(() => NotificationsModule),
     DriverModule,

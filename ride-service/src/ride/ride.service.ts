@@ -1,4 +1,4 @@
-import { Injectable, Logger, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException, NotFoundException, Inject, forwardRef } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
 import { RideRepository } from './ride.repository';
@@ -20,9 +20,9 @@ export class RideService {
     private configService: ConfigService,
     private rideRepository: RideRepository,
     private driverOfferRepository: DriverOfferRepository,
-    private geoService: GeoService,
+    @Inject(forwardRef(() => GeoService)) private geoService: GeoService,
     private routingService: RoutingService,
-    private notificationsService: NotificationsService,
+    @Inject(forwardRef(() => NotificationsService)) private notificationsService: NotificationsService,
     private cancellationRepository: CancellationRepository,
   ) {
     this.offerTimeoutSeconds = this.configService.get<number>('ride.offerTimeoutSeconds') || 20;
