@@ -1,0 +1,23 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mobility-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    extra_hosts:
+      - "auth-service:host-gateway"
+      - "ride-service:host-gateway"
+    networks:
+      - ride-network
+      - auth-network
+
+networks:
+  ride-network:
+    name: ride-network
+    driver: bridge
+  auth-network:
+    name: auth-network
+    driver: bridge
